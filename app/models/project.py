@@ -10,12 +10,11 @@ class Project(db.Model):
     end_date = db.Column(db.Date)
 
     status = db.Column(
-        # db.Enum('planning', 'in_progress', 'completed', name='project_status', create_type=False),
-        db.String(20),
+        db.Enum('planning', 'in_progress', 'completed', 'cancelled', 'delayed', 'overdue', 'on_hold', 'postponed', name='project_status'),
         default='planning',
         nullable=False
     )
-
+    
     # Foreign key
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'))
 

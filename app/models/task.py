@@ -6,7 +6,7 @@ class Task(db.Model):
     description = db.Column(db.Text)
     start_date = db.Column(db.Date)
     end_date = db.Column(db.Date)
-    status = db.Column(db.Enum('planning', 'in_progress', 'completed'), default="planning")
+    status = db.Column(db.Enum('pending', 'in_progress', 'completed', 'cancelled', name='task_status'), default="planning")
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
     project = db.relationship('Project', back_populates='tasks', lazy=True)

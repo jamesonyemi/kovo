@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kovo Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="ant-layout">
+        <div class="ant-layout-header">
+            <div class="ant-row">
+                <div class="ant-col ant-col-16">
+                    <h1 class="ant-typography">Kovo Admin</h1>
+                </div>
+                <div class="ant-col ant-col-8">
+                    <ul class="ant-menu ant-menu-horizontal">
+                        <li class="ant-menu-item">
+                            <a href="{{ url_for('admin.index') }}">Dashboard</a>
+                        </li>
+                        <li class="ant-menu-item">
+                            <a href="#">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="ant-layout-content">
+            <div class="ant-row">
+                <div class="ant-col ant-col-4">
+                    <div class="ant-menu ant-menu-inline ant-menu-light">
+                        <div class="ant-menu-item">
+                            <a href="{{ url_for('admin.index') }}">Dashboard</a>
+                        </div>
+                        <div class="ant-menu-item">
+                            <a href="#">Teams</a>
+                        </div>
+                        <div class="ant-menu-item">
+                            <a href="#">Projects</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="ant-col ant-col-20">
+                    {% block content %}
+                    <div class="ant-row ant-row-space-between">
+                        <div class="ant-col ant-col-6">
+                            <div class="ant-card">
+                                <div class="ant-card-body">
+                                    <p class="ant-typography">Teams</p>
+                                    <p class="ant-typography">{{ teams|length }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ant-col ant-col-6">
+                            <div class="ant-card">
+                                <div class="ant-card-body">
+                                    <p class="ant-typography">Projects</p>
+                                    <p class="ant-typography">{{ projects|length }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ant-col ant-col-6">
+                            <div class="ant-card">
+                                <div class="ant-card-body">
+                                    <p class="ant-typography">Tasks</p>
+                                    <p class="ant-typography">{{ tasks|length }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ant-row">
+                        <div class="ant-col ant-col-24">
+                            <table class="ant-table ant-table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th>Team</th>
+                                        <th>Project</th>
+                                        <th>Task</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for team in teams %}
+                                    <tr>
+                                        <td>{{ team.name }}</td>
+                                        <td>{{ team.projects|length }}</td>
+                                        <td>{{ team.tasks|length }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

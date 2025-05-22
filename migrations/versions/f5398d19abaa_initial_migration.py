@@ -1,17 +1,17 @@
-"""Add project with enum status
+"""initial migration
 
-Revision ID: 6c65866059e3
-Revises: a2c20962ff3f
-Create Date: 2025-05-20 17:09:22.026071
+Revision ID: f5398d19abaa
+Revises: 
+Create Date: 2025-05-22 09:22:22.376551
 
 """
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
+
 
 # revision identifiers, used by Alembic.
-revision = '6c65866059e3'
-down_revision = 'a2c20962ff3f'
+revision = 'f5398d19abaa'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -31,7 +31,7 @@ def upgrade():
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('start_date', sa.Date(), nullable=True),
     sa.Column('end_date', sa.Date(), nullable=True),
-    sa.Column('status', postgresql.ENUM('planning', 'in_progress', 'completed', name='project_status_enum'), nullable=False),
+    sa.Column('project_status', sa.Enum('planning', 'in_progress', 'completed', 'cancelled', 'delayed', 'overdue', 'on_hold', 'postponed', name='project_status'), nullable=False), 
     sa.Column('team_id', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
@@ -53,7 +53,7 @@ def upgrade():
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('start_date', sa.Date(), nullable=True),
     sa.Column('end_date', sa.Date(), nullable=True),
-    sa.Column('status', sa.Enum('planning', 'in_progress', 'completed'), nullable=True),
+    sa.Column('status', sa.Enum('planning', 'in_progress', 'completed', name='status', nullable=False), nullable=True),
     sa.Column('project_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['project_id'], ['project.id'], ),
     sa.PrimaryKeyConstraint('id')

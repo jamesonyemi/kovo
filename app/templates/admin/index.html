@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Admin Dashboard</h1>
+    <ul>
+        <li>Teams: {{ teams|length }}</li>
+        <li>Projects: {{ projects|length }}</li>
+    </ul>
+    <h2>Teams</h2>
+    <ul>
+        {% for team in teams %}
+            <li>{{ team.name }} ({{ team.users|length }})</li>
+        {% endfor %}
+    </ul>
+    <h2>Projects</h2>
+    <ul>
+        {% for project in projects %}
+            <li>{{ project.name }} ({{ project.tasks|length }})</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
