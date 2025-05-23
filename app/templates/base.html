@@ -1,102 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kovo Admin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PM Dashboard - Metrics & Profile Dropdown</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollbar for content areas */
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background-color: rgba(100, 100, 100, 0.4);
+      border-radius: 3px;
+    }
+    /* Profile dropdown arrow */
+    [data-dropdown-toggle]::after {
+      content: '';
+      display: inline-block;
+      margin-left: 6px;
+      vertical-align: middle;
+      border-top: 5px solid;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+    }
+    [data-dropdown-toggle].active::after {
+      border-top: 0;
+      border-bottom: 5px solid;
+    }
+    [data-dropdown-toggle].active + [data-dropdown-content] {
+      display: block;
+    }
+    [data-dropdown-content] {
+      display: none;
+    }
+    .select-none {
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background-color: rgba(100, 100, 100, 0.4);
+      border-radius: 3px;
+    }
+    .top-nav{
+        @apply flex h-7 items-center justify-center rounded-full px-1 text-center text-sm font-medium text-muted-foreground transition-colors hover:text-primary data-[active=true]:bg-muted data-[active=true]:text-primary hover:text-white transition text-xs
+    }
+  </style>
 </head>
-<body>
-    <div class="ant-layout">
-        <div class="ant-layout-header">
-            <div class="ant-row">
-                <div class="ant-col ant-col-16">
-                    <h1 class="ant-typography">Kovo Admin</h1>
-                </div>
-                <div class="ant-col ant-col-8">
-                    <ul class="ant-menu ant-menu-horizontal">
-                        <li class="ant-menu-item">
-                            <a href="{{ url_for('admin.index') }}">Dashboard</a>
-                        </li>
-                        <li class="ant-menu-item">
-                            <a href="#">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="ant-layout-content">
-            <div class="ant-row">
-                <div class="ant-col ant-col-4">
-                    <div class="ant-menu ant-menu-inline ant-menu-light">
-                        <div class="ant-menu-item">
-                            <a href="{{ url_for('admin.index') }}">Dashboard</a>
-                        </div>
-                        <div class="ant-menu-item">
-                            <a href="#">Teams</a>
-                        </div>
-                        <div class="ant-menu-item">
-                            <a href="#">Projects</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="ant-col ant-col-20">
-                    {% block content %}
-                    <div class="ant-row ant-row-space-between">
-                        <div class="ant-col ant-col-6">
-                            <div class="ant-card">
-                                <div class="ant-card-body">
-                                    <p class="ant-typography">Teams</p>
-                                    <p class="ant-typography">{{ teams|length }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ant-col ant-col-6">
-                            <div class="ant-card">
-                                <div class="ant-card-body">
-                                    <p class="ant-typography">Projects</p>
-                                    <p class="ant-typography">{{ projects|length }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ant-col ant-col-6">
-                            <div class="ant-card">
-                                <div class="ant-card-body">
-                                    <p class="ant-typography">Tasks</p>
-                                    <p class="ant-typography">{{ tasks|length }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ant-row">
-                        <div class="ant-col ant-col-24">
-                            <table class="ant-table ant-table-borderless">
-                                <thead>
-                                    <tr>
-                                        <th>Team</th>
-                                        <th>Project</th>
-                                        <th>Task</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for team in teams %}
-                                    <tr>
-                                        <td>{{ team.name }}</td>
-                                        <td>{{ team.projects|length }}</td>
-                                        <td>{{ team.tasks|length }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    {% endblock %}
-                </div>
-            </div>
-        </div>
-    </div>
+<body class="bg-white text-gray-900 font-sans">
+
+  <!-- Top Navigation -->
+  <header class="fixed top-0 left-0 right-0 h-14 bg-gray-900 text-gray-100 flex items-center px-6 shadow-md z-40">
+    <div class="text-md font-semibold tracking-wide select-none">PM Dashboard</div>
+    <nav class="ml-auto flex items-center space-x-6">
+      <button class="top-nav hover:text-white transition text-xs"><a href="{{ url_for('admin.index') }}">Dashboard</a></button>
+      <button class="top-nav hover:text-primary transition text-xs"><a href="{{ url_for('project.index') }}">Projects</a></button>
+      <button class="top-nav hover:text-primary transition text-xs">Teams</button>
+      <button class="top-nav hover:text-primary transition text-xs">Reports</button>
+      <button class="top-nav hover:text-primary transition text-xs">Settings</button>
+
+      <!-- User Profile Dropdown -->
+      <div class="relative ml-6">
+        <button id="user-menu-button" data-dropdown-toggle aria-haspopup="true" aria-expanded="false"
+          class="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-white rounded-md hover:text-white transition">
+          <img src="https://i.pravatar.cc/16" alt="User avatar" class="w-8 h-8 rounded-full" />
+          <span class="select-none">Jane D.</span>
+        </button>
+        <div id="user-dropdown" class="hidden absolute right-0 top-full px-2 py-1-b-2 mt-2 w-48 bg-white text-xs text-gray-900 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+          <a href="#" class="block px-2 py-1.5 hover:bg-gray-100 select-none">
+            Profile</a>
+          <a href="#" class="block px-2 py-1.5 hover:bg-gray-100 select-none">Settings</a>
+          <a href="#" class="block px-2 py-1.5 hover:bg-gray-100 select-none">Billing</a>
+          <div role="separator" aria-orientation="horizontal" class="-mx-1 my-1 h-px bg-gray-200"></div>
+          <a href="#" class="block px-2 py-1.5 hover:bg-gray-100 select-none">Logout</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar Navigation -->
+  <aside class="fixed top-14 left-0 w-64 h-[calc(100vh-3.5rem)] bg-gray-900 text-gray-300 flex flex-col shadow-lg overflow-y-auto scrollbar-thin">
+    <nav class="mt-6 flex flex-col space-y-2 px-4 text-sm">
+      <a href="#" class="py-3 px-4 rounded-md hover:bg-gray-700 hover:text-white transition font-medium select-none">Overview</a>
+      <a href="#" class="py-3 px-4 rounded-md hover:bg-gray-700 hover:text-white transition font-medium select-none">Tasks</a>
+      <a href="#" class="py-3 px-4 rounded-md hover:bg-gray-700 hover:text-white transition font-medium select-none">Calendar</a>
+      <a href="#" class="py-3 px-4 rounded-md hover:bg-gray-700 hover:text-white transition font-medium select-none">Files</a>
+      <a href="#" class="py-3 px-4 rounded-md hover:bg-gray-700 hover:text-white transition font-medium select-none">Analytics</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="ml-0 lg:ml-64 pt-20 px-8 max-w-7xl mx-auto min-h-screen space-y-10">
+  {% block content %}{% endblock %}
+   
+  </main>
+  <script>
+    // Dropdown toggle
+    const userBtn = document.getElementById('user-menu-button');
+    const dropdown = document.getElementById('user-dropdown');
+
+    userBtn.addEventListener('click', () => {
+      const isHidden = dropdown.classList.contains('hidden');
+      dropdown.classList.toggle('hidden', !isHidden);
+      userBtn.setAttribute('aria-expanded', isHidden);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!userBtn.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add('hidden');
+        userBtn.setAttribute('aria-expanded', false);
+      }
+    });
+  </script>
+
+{% block scripts %}{% endblock %}
 </body>
 </html>
-
